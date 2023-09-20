@@ -85,7 +85,8 @@ $searchForm.on("submit", async function handleSearchForm(evt) {
 });
 
 
-/** Given a show ID, get from API and return (promise) array of episodes:
+/**
+ * Given a show ID, get from API and return (promise) array of episodes:
  *      { id, name, season, number }
  */
 
@@ -106,39 +107,39 @@ async function getEpisodesOfShow(id) {
 
 }
 
-/** Write a clear docstring for this function... */
-{/* <section id="episodesArea" style="display: none">
-<h3>Episodes</h3>
-<ul id="episodesList"><!-- will be filled in by JS --></ul>
-</section> */}
+
+/**
+ * Appends episodes to episode list
+ */
 function displayEpisodes(episodes) {
   const $episodesList = $('#episodesList');
 
   const episodesToLi = episodes.map(
     episode => `<li>${episode.name} (season ${episode.season}, number ${episode.number})</li>`);
-  for (episode of episodesToLi) {
+  for (let episode of episodesToLi) {
     $episodesList.append(episode);
   }
 
   const $episodeArea = $($episodesArea);
-  $episodeArea.show();
+  $episodeArea.css("display", "block");
 }
 
+/**
+ *
+*/
 async function getShowIds(id) {
-
-
-  let episodes = await getEpisodesOfShow();
+  const episodes = await getEpisodesOfShow(id);
   displayEpisodes(episodes);
 }
 
+/**
+ *
+*/
 async function showEpisodes(evt) {
-  console.log(evt.target);
   evt.preventDefault();
-  //const id = $()
-  //getShowIds(id);
+  const id = $(evt.target).closest('[data-show-id]').data("showId");
+  await getShowIds(id);
 }
-
-
 
 $showsList.on('click', '.Show-getEpisodes', showEpisodes);
 
