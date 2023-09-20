@@ -12,8 +12,6 @@ const $searchForm = $("#searchForm");
  *    (if no image URL given by API, put in a default image URL)
  */
 
-//TODO: use map()
-
 const TVMAZE_BASE_URL = 'http://api.tvmaze.com/';
 const MISSING_IMAGE_URL = 'https://miro.medium.com/v2/resize:fit:479/0*5bRx6RbvKwCG5ig5.jpg';
 
@@ -117,14 +115,34 @@ function displayEpisodes(episodes) {
   const $episodesList = $('#episodesList');
 
   const episodesToLi = episodes.map(
-    episode =>`<li>${episode.name} (season ${episode.season}, number ${episode.number})</li>`);
-  for(episode of episodesToLi){
+    episode => `<li>${episode.name} (season ${episode.season}, number ${episode.number})</li>`);
+  for (episode of episodesToLi) {
     $episodesList.append(episode);
   }
 
   const $episodeArea = $($episodesArea);
   $episodeArea.show();
 }
+
+async function getShowIds(id) {
+
+
+  let episodes = await getEpisodesOfShow();
+  displayEpisodes(episodes);
+}
+
+async function showEpisodes(evt) {
+  console.log(evt.target);
+  evt.preventDefault();
+  //const id = $()
+  //getShowIds(id);
+}
+
+
+
+$showsList.on('click', '.Show-getEpisodes', showEpisodes);
+
+
 
 
 // add other functions that will be useful / match our structure & design
